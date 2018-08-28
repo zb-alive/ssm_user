@@ -21,6 +21,7 @@ public class UserController {
 	public String list(ModelMap modelMap) throws Exception {
 	  List<User> users = userService.getUsers();
 	  modelMap.put("userList", users);
+	  modelMap.put("msg", "查询列表成功");
       return "list";		
 	}
 }
