@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- 开启注解扫描 -->
+	<context:component-scan base-package="com.myweb" />
+
+
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<!-- 配置自定义参数绑定需要的数据类型转换器 -->
+				<bean class="com.myweb.common.DateConverter" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- 注解驱动:自定挂载处理器映射器和处理器适配器 -->
+	<mvc:annotation-driven conversion-service="conversionService" />
+
+	<!-- 配置视图解析器 作用:在controller中指定页面路径的时候就不用写页面的完整路径名称了,可以直接写页面去掉扩展名的名称 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 真正的页面路径 = 前缀 + 去掉后缀名的页面名称 + 后缀 -->
+		<!-- 前缀 -->
+		<property name="prefix" value="/jsp/"></property>
+		<!-- 后缀 -->
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!-- 没有映射到的URL交给默认的web容器中的servlet进行处理-->
+	<mvc:default-servlet-handler />
+</beans>
